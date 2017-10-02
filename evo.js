@@ -33,7 +33,7 @@ function howPalindromic(word) {
       palindrominess++;
   }
   var letters_checked = Math.ceil(word.length/2);
-  console.log(word +" has "+palindrominess+" out of "+letters_checked+" letters matching")
+  // console.log(word +" has "+palindrominess+" out of "+letters_checked+" letters matching")
   return palindrominess/letters_checked;
 }
 
@@ -105,7 +105,9 @@ function step(candidates) {
     var score = evaluate(candidates[i]);
     if (score >= threshold) {
       solution = candidates[i];
-      console.log("An awesome string was found! It's: " + solution); 
+      var victoryString = "An awesome string was found! It's: " + solution;
+      console.log(victoryString); 
+      document.getElementById("evolved").innerHTML += "<pre>"+victoryString+"</pre>";
     }
     scores.push({candidate: candidates[i], score: evaluate(candidates[i])});
   }
@@ -136,9 +138,13 @@ function evolve(source, bound) {
   if(bound > 0) {
     var answer = step(source);
     if(answer) {
-      console.log("An awesome string was found! It's: " + answer); 
+      var victoryString = "An awesome string was found! It's: " + answer;
+      document.getElementById("evolved").innerHTML += "<pre>"+victoryString+"</pre>";
     }
     else {
+      // XXX why isn't the below line working?
+      document.getElementById("evolved").innerHTML += "<pre>"+source.toString()+"</pre>";
+      console.log("iteration bound is now "+bound);
       evolve(source, bound-1);
     }
   } else {
