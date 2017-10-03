@@ -1,4 +1,4 @@
-var source = ["abcbabc", "bcaaa", "cabaab", "cccbacbabab", "abc", "cbccc"]
+var source = ["abcbabc", "bcaaa", "cabaab", "cccbacbabab", "aba", "cbccc"]
 var bound = 10 // the number of generations to evolve by default
 
 // UI stuff
@@ -48,15 +48,18 @@ function getRandom(arr) {
 
 // Genetic algorithm functions
 function evaluate(individual) {
+  if (howPalindromic(individual) == 1)
+      return individual.length;
+  else
+      return 0
   // Prefer long, palindromic strings
-  return howPalindromic(individual) * (individual.length/2); 
-  // XXX fiddle with this
+  // return howPalindromic(individual) * (individual.length/2); 
 }
 
 var alphabet = ["a", "b", "c"]
 var mutate_prob = 0.4
 var lambda = Math.floor(source.length/2)
-var threshold = 3
+var threshold = 4
 
 function mutate(individual) {
   var components = individual.split("");
