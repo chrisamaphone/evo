@@ -59,17 +59,24 @@ function evaluate(individual) {
 // Hint: For a string s, s.split("") will give you an array of its
 // characters, and for an array a of strings, a.join("") will turn them
 // back into a single string
+//
+// Hint: Math.random() returns a pseudorandom decimal num btwn 0 and 1
 function mutate(individual) {
 }
 
 // Input: an array of individuals
 // Output: an array of individuals of the same size as input where each
 // individual is mutated
+//
+// Useful JS thing: [] is a new empty array; an array a has a method
+// a.push(value) which adds a new value to the end
 function reproduce(individuals) { 
 }
 
 // A datatype for representing individuals with eval scores:
 // {candidate: individual, score: int}
+// 
+// The below two functions operate on this data
 
 // Input: 2 scored individuals (objects w/score field), c1 and c2
 // Output: the difference between c1 and c2's scores
@@ -77,9 +84,11 @@ function compareScores(c1, c2) {
   return (c1.score - c2.score);
 }
 
+// dropScores takes an array of candidate,score pairs and drops the score
+//  component.
 // Input: an array of scored individuals (objects w/fields score and
 //  individual)
-// Output: an array of individuals matching the "candidate" fields of input array (erases scores)
+// Output: an array of individuals matching the "candidate" fields of input array
 function dropScores(scores) {
   var candidates = [];
   for(var i = 0; i < scores.length; i++) {
@@ -104,6 +113,14 @@ function step(candidates) {
 // Input: a source population (string array) and a bound (number)
 // Output: evolved population for bound iterations
 // Side effects: update source; print new populations at each step
+//
+// Useful JavaScript things:
+//  For an array a, a.sort(compFn) will sort according to a comparison
+//  function compFn, which takes two arguments from the array and returns a
+//  number representing whether the 1st is > the 2nd. 
+//  See the function defined above for an example.
+//
+// console.log(someString) displays it to the JS console
 function evolve(source, bound) {
   if(bound > 0) {
     var answer = step(source);
