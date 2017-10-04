@@ -1,6 +1,3 @@
-var source = ["abcbabc", "bcaaa", "cabaab", "cccbacbabab", "aba", "cbccc"]
-var bound = 10 // the number of generations to evolve by default
-
 // UI stuff
 window.onload = function() {
 
@@ -36,7 +33,12 @@ function getRandom(arr) {
 }
 
 
-// Genetic algorithm functions
+//**** Evolutionary Algorithms ****//
+
+// Starting population
+var source = ["abcbabc", "bcaaa", "cabaab", "cccbacbabab", "aba", "cbccc"]
+var bound = 10 // the number of generations to evolve by default
+
 var alphabet = ["a", "b", "c"]
 var mutate_prob = 0.4
 var lambda = Math.floor(source.length/2)
@@ -44,11 +46,19 @@ var threshold = 4
 
 // Input: an individual (string)
 // Output: a number representing individual's fitness
+//
+// This function should take into account:
+// (a) the "palindrominess" of a string
+// (b) its length
 function evaluate(individual) {
 } 
 
 // Input: an individual (string)
 // Output: an individual (string) with some characters modified at random 
+//
+// Hint: For a string s, s.split("") will give you an array of its
+// characters, and for an array a of strings, a.join("") will turn them
+// back into a single string
 function mutate(individual) {
 }
 
@@ -57,6 +67,9 @@ function mutate(individual) {
 // individual is mutated
 function reproduce(individuals) { 
 }
+
+// A datatype for representing individuals with eval scores:
+// {candidate: individual, score: int}
 
 // Input: 2 scored individuals (objects w/score field), c1 and c2
 // Output: the difference between c1 and c2's scores
@@ -99,7 +112,7 @@ function evolve(source, bound) {
       document.getElementById("evolved").innerHTML += "<pre>"+victoryString+"</pre>";
     }
     else {
-      // XXX why isn't the below line working?
+      // XXX the below line doesn't seem to be working
       document.getElementById("evolved").innerHTML += "<pre>"+source.toString()+"</pre>";
       console.log("iteration bound is now "+bound);
       evolve(source, bound-1);
