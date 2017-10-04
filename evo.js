@@ -26,17 +26,6 @@ window.onload = function() {
 
 // Util
 
-function howPalindromic(word) {
-  var palindrominess = 0;
-  for(var i=0; i < word.length/2; i++) {
-    if(word[i] == word[word.length-i-1])
-      palindrominess++;
-  }
-  var letters_checked = Math.ceil(word.length/2);
-  // console.log(word +" has "+palindrominess+" out of "+letters_checked+" letters matching")
-  return palindrominess/letters_checked;
-}
-
 // random int from 0 to max-1
 function randInt(max) {
   return Math.floor(Math.random()*max);
@@ -46,53 +35,38 @@ function getRandom(arr) {
   return arr[randInt(arr.length)]; 
 }
 
-// Genetic algorithm functions
-function evaluate(individual) {
-  if (howPalindromic(individual) == 1)
-      return individual.length;
-  else
-      return 0
-  // Prefer long, palindromic strings
-  // return howPalindromic(individual) * (individual.length/2); 
-}
 
+// Genetic algorithm functions
 var alphabet = ["a", "b", "c"]
 var mutate_prob = 0.4
 var lambda = Math.floor(source.length/2)
 var threshold = 4
 
+// Input: an individual (string)
+// Output: a number representing individual's fitness
+function evaluate(individual) {
+} 
+
+// Input: an individual (string)
+// Output: an individual (string) with some characters modified at random 
 function mutate(individual) {
-  var components = individual.split("");
-  // for each character in the word, change it to a random instance of the
-  // alphabet with probability mutate_prob
-  for(var i = 0; i < components.length; i++) {
-    if(Math.random() <= mutate_prob) {
-      var newchar = getRandom(alphabet);
-      components[i] = newchar; 
-    }
-  }
-  var mutant = components.join("");
-  // sometimes also add a character
-  if(Math.random() <= mutate_prob) {
-    mutant += getRandom(alphabet)
-  }
-  return mutant;
 }
 
-// Returns an array of the same size as individuals that is each
-// individual mutated
-function reproduce(individuals) {
-  var mutated = [];
-  for(var i = 0; i < individuals.length; i++) {
-    mutated.push(mutate(individuals[i]));
-  }
-  return mutated;
+// Input: an array of individuals
+// Output: an array of individuals of the same size as input where each
+// individual is mutated
+function reproduce(individuals) { 
 }
 
+// Input: 2 scored individuals (objects w/score field), c1 and c2
+// Output: the difference between c1 and c2's scores
 function compareScores(c1, c2) {
   return (c1.score - c2.score);
 }
 
+// Input: an array of scored individuals (objects w/fields score and
+//  individual)
+// Output: an array of individuals matching the "candidate" fields of input array (erases scores)
 function dropScores(scores) {
   var candidates = [];
   for(var i = 0; i < scores.length; i++) {
@@ -101,42 +75,22 @@ function dropScores(scores) {
   return candidates;
 }
 
+// Input: array of candidates
+// Output: a solution if there is one above the threshold, undefined if not
+// Side effect: update global variable "source" to newly evolved set of
+//  candidates
 function step(candidates) {
-  var scores = [];
-  var solution = undefined;
-  for(var i = 0; i < candidates.length; i++) {
-    var score = evaluate(candidates[i]);
-    if (score >= threshold) {
-      solution = candidates[i];
-      var victoryString = "An awesome string was found! It's: " + solution;
-      console.log(victoryString); 
-      document.getElementById("evolved").innerHTML += "<pre>"+victoryString+"</pre>";
-    }
-    scores.push({candidate: candidates[i], score: evaluate(candidates[i])});
-  }
-  var sorted = scores.sort(compareScores);
-  console.log("Scored: " + JSON.stringify(sorted));
-
+  // compute scores
   // drop lowest lambda elements
-  candidates = sorted.slice(lambda);
-  console.log("Kept: " + JSON.stringify(candidates));
-
-  // remove the score info
-  candidates = dropScores(candidates);
-  
-  // create new mutated elements
-  var offspring = reproduce(candidates);
-  console.log("New offspring:" + offspring.toString());
-
-  // Add offspring to the gene pool
-  candidates = candidates.concat(offspring);
-
-  // Update the source for the next iteration
-  source = candidates;
-
-  return solution;
+  // create new mutated elements (offspring)
+  // add offspring to the gene pool
+  // update the source for the next iteration
+  // return solution
 }
 
+// Input: a source population (string array) and a bound (number)
+// Output: evolved population for bound iterations
+// Side effects: update source; print new populations at each step
 function evolve(source, bound) {
   if(bound > 0) {
     var answer = step(source);
